@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "LHListView.h"
+#import "LHListViewController.h"
 
 @interface ViewController () <LHListViewDatasource, LHListViewDelegate>
 
@@ -15,7 +16,7 @@
 
 @implementation ViewController
 - (void)refresh:(UIRefreshControl *)refresh {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [refresh endRefreshing];
     });
 }
@@ -35,7 +36,6 @@
     [listView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"h"];
     [listView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"f"];
     
-    listView.adsorbHeader = YES;
 }
 - (NSInteger)numberOfSectionsInListView:(LHListView *)listView {
     return 2;
@@ -69,6 +69,7 @@
 
 - (void)listView:(LHListView *)listView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    [listView reloadItemsAtIndexPaths:@[indexPath]];
+    [self presentViewController:[[LHListViewController alloc] init] animated:YES completion:nil];
 }
 
 - (BOOL)listView:(LHListView *)listView shouldEditRowAtIndexPath:(NSIndexPath *)indexPath {

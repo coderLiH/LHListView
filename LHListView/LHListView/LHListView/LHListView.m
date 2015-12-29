@@ -205,6 +205,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         case UIGestureRecognizerStateChanged:
         {
             if (!self.scrollView.dragging) {
+                self.scrollView.scrollEnabled = NO;
                 if (self.contentView.frame.origin.x >= -self.editWidth && self.contentView.frame.origin.x <= 0) {
                     self.contentView.frame = CGRectMake(self.contentView.frame.origin.x+[pan translationInView:self].x, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
                 } else {
@@ -223,6 +224,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         case UIGestureRecognizerStateFailed:
         case UIGestureRecognizerStateCancelled:
         {
+            self.scrollView.scrollEnabled = YES;
             if (self.contentView.frame.origin.x >= -self.editWidth/2) {
                 [self animateBackNeedAnimation:YES];
             } else {
@@ -238,6 +240,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         }
             break;
         default:
+            self.scrollView.scrollEnabled = YES;
             break;
     }
     [pan setTranslation:CGPointZero inView:self];
