@@ -82,11 +82,6 @@ LHIndexMake(NSInteger row, NSInteger section)
 
 
 @interface LHListViewCell : UICollectionViewCell
-@property (nonatomic, assign) CGFloat editWidth;
-@property (nonatomic, assign) Class editClass;
-@property (nonatomic, assign) BOOL editing;
-
-@property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, assign) LHIndex index;
 @end
 

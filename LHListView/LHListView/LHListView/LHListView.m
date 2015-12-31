@@ -57,30 +57,36 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LHListViewCell *cell = [self.listDataSource listView:self cellForRowAtIndexPath:indexPath];
-    cell.scrollView = self;
+//    cell.scrollView = self;
+    [cell setValue:self forKey:@"scrollView"];
     
     if ([self.listDelegate respondsToSelector:@selector(listView:shouldEditRowAtIndexPath:)]) {
         if ([self.listDelegate respondsToSelector:@selector(listView:widthForEditViewAtIndexPath:)]) {
-            cell.editWidth = [self.listDelegate listView:self widthForEditViewAtIndexPath:indexPath];
+            [cell setValue:@([self.listDelegate listView:self widthForEditViewAtIndexPath:indexPath]) forKey:@"editWidth"];
+//            cell.editWidth = [self.listDelegate listView:self widthForEditViewAtIndexPath:indexPath];
         } else {
-            cell.editWidth = 60;
+            [cell setValue:@(60) forKey:@"editWidth"];
+//            cell.editWidth = 60;
         }
         if ([self.listDelegate respondsToSelector:@selector(listView:editClassAtIndexPath:)]) {
             Class class = [self.listDelegate listView:self editClassAtIndexPath:indexPath];
             if ([class isSubclassOfClass:NSClassFromString(@"LHListViewCellEditView")]) {
-                cell.editClass = class;
+//                cell.editClass = class;
+                [cell setValue:class forKey:@"editClass"];
             } else {
                 NSString *classString = [NSString stringWithFormat:@"%@ is not subClass of LHListViewCellEditView", NSStringFromClass(class)];
                 NSAssert(nil, classString);
             }
         } else {
-            cell.editClass = NSClassFromString(@"LHListViewCellEditView");
+            [cell setValue:NSClassFromString(@"LHListViewCellEditView") forKey:@"editClass"];
+//            cell.editClass = NSClassFromString(@"LHListViewCellEditView");
         }
-        cell.editing = [self.listDelegate listView:self shouldEditRowAtIndexPath:indexPath];
+        [cell setValue:@([self.listDelegate listView:self shouldEditRowAtIndexPath:indexPath]) forKey:@"editing"];
+//        cell.editing = [self.listDelegate listView:self shouldEditRowAtIndexPath:indexPath];
     } else {
-        cell.editing = NO;
+        [cell setValue:@(NO) forKey:@"editing"];
+//        cell.editing = NO;
     }
-    
     cell.index = LHIndexMake(indexPath.row, indexPath.section);
     return cell;
 }
@@ -152,6 +158,11 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 
 
 @interface LHListViewCell () <UIGestureRecognizerDelegate>
+@property (nonatomic, assign) Class editClass;
+@property (nonatomic, assign) CGFloat editWidth;
+@property (nonatomic, assign) BOOL editing;
+
+@property (nonatomic, weak)   UIScrollView *scrollView;
 @property (nonatomic, strong) LHListViewCellEditView *editView;
 @property (nonatomic, strong) UIPanGestureRecognizer *editGesture;
 @property (nonatomic, strong) UIView *cancelEditView;
