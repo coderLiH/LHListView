@@ -81,12 +81,22 @@ LHIndexMake(NSInteger row, NSInteger section)
 
 
 
-@interface LHListViewCell : UICollectionViewCell
+
+@class LHListViewCellEditView;
+@protocol LHListViewCellEditViewDelegate <NSObject>
+@optional
+- (void)editView:(LHListViewCellEditView *)editView didTapWithTap:(UITapGestureRecognizer *)tap;
+@end
+
+@interface LHListViewCellEditView : UIView
 @property (nonatomic, assign) LHIndex index;
+@property (nonatomic, weak) id <LHListViewCellEditViewDelegate> delegate;
 @end
 
 
 
-@interface LHListViewCellEditView : UIView
+
+
+@interface LHListViewCell : UICollectionViewCell <LHListViewCellEditViewDelegate>
 @property (nonatomic, assign) LHIndex index;
 @end

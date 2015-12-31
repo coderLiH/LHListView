@@ -157,6 +157,40 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 @end
 
 
+
+
+
+@interface LHListViewCellEditView ()
+@property (nonatomic, strong) UITapGestureRecognizer *rootTap;
+@end
+
+@implementation LHListViewCellEditView
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.backgroundColor = [UIColor redColor];
+        
+        _rootTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+        [self addGestureRecognizer:_rootTap];
+    }
+    return self;
+}
+
+- (void)tapAction:(UITapGestureRecognizer *)tap {
+    if ([self.delegate respondsToSelector:@selector(editView:didTapWithTap:)]) {
+        [self.delegate editView:self didTapWithTap:tap];
+    }
+}
+@end
+
+
+
+
+
+
+
+
+
 @interface LHListViewCell () <UIGestureRecognizerDelegate>
 @property (nonatomic, assign) Class editClass;
 @property (nonatomic, assign) CGFloat editWidth;
@@ -227,7 +261,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
                     }
                 }
             } else {
-//                if (self.contentView.frame.origin.x != 0) {}
+                //                if (self.contentView.frame.origin.x != 0) {}
             }
         }
             break;
@@ -302,8 +336,8 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     if (!_editGesture) {
         _editGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editGestureRealize:)];
         _editGesture.delegate = self;
-//        [_editGesture requireGestureRecognizerToFail:self.scrollView.panGestureRecognizer];
-//        [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:_editGesture];
+        //        [_editGesture requireGestureRecognizerToFail:self.scrollView.panGestureRecognizer];
+        //        [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:_editGesture];
     }
     return _editGesture;
 }
@@ -313,6 +347,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         [self addSubview:_editView];
         [self sendSubviewToBack:_editView];
         _editView.hidden = YES;
+        _editView.delegate = self;
     }
     return _editView;
 }
@@ -344,17 +379,5 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-@end
-
-
-
-@implementation LHListViewCellEditView
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.backgroundColor = [UIColor redColor];
-    }
-    return self;
 }
 @end
