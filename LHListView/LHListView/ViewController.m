@@ -68,8 +68,7 @@
 }
 
 - (void)listView:(LHListView *)listView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [listView reloadItemsAtIndexPaths:@[indexPath]];
-    [self presentViewController:[[LHListViewController alloc] init] animated:YES completion:nil];
+    [self.navigationController pushViewController:[[ViewController alloc] init] animated:YES];
 }
 
 - (BOOL)listView:(LHListView *)listView shouldEditRowAtIndexPath:(NSIndexPath *)indexPath {
