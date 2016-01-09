@@ -205,7 +205,8 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 @implementation LHListViewCell
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.contentView.hidden = YES;
+        self.contentContainer.backgroundColor = [UIColor whiteColor];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterEdit) name:LHListViewCellEnterEditNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEdit) name:LHListViewCellEndEditNotification object:nil];
     }
@@ -250,18 +251,19 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         case UIGestureRecognizerStateChanged:
         {
             if (!self.scrollView.dragging) {
+                CGPoint move = [pan translationInView:self];
                 self.scrollView.scrollEnabled = NO;
-                if (self.contentView.frame.origin.x >= -self.editWidth && self.contentView.frame.origin.x <= 0) {
-                    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x+[pan translationInView:self].x, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+                if (self.contentContainer.frame.origin.x >= -self.editWidth && self.contentContainer.frame.origin.x <= 0) {
+                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 } else {
-                    if (self.contentView.frame.origin.x > 20) {
-                        self.contentView.frame = CGRectMake(self.contentView.frame.origin.x+[pan translationInView:self].x/10.0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+                    if (self.contentContainer.frame.origin.x > 20) {
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/10.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                     } else {
-                        self.contentView.frame = CGRectMake(self.contentView.frame.origin.x+[pan translationInView:self].x/5.0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/5.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                     }
                 }
             } else {
-                //                if (self.contentView.frame.origin.x != 0) {}
+                //                if (self.contentContainer.frame.origin.x != 0) {}
             }
         }
             break;
@@ -270,11 +272,11 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         case UIGestureRecognizerStateCancelled:
         {
             self.scrollView.scrollEnabled = YES;
-            if (self.contentView.frame.origin.x >= -self.editWidth/2) {
+            if (self.contentContainer.frame.origin.x >= -self.editWidth/2) {
                 [self animateBackNeedAnimation:YES];
             } else {
                 [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    self.contentView.frame = CGRectMake(-self.editWidth, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+                    self.contentContainer.frame = CGRectMake(-self.editWidth, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 } completion:^(BOOL finished) {
                     if ([self.gestureRecognizers containsObject:self.editGesture]) {
                         [self removeGestureRecognizer:self.editGesture];
@@ -298,12 +300,12 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 - (void)animateBackNeedAnimation:(BOOL)need {
     if (need) {
         [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.contentView.frame = self.bounds;
+            self.contentContainer.frame = self.bounds;
         } completion:^(BOOL finished) {
             [self decideWhetherNeedEditGesture:self.editing];
         }];
     } else {
-        self.contentView.frame = self.bounds;
+        self.contentContainer.frame = self.bounds;
         [self decideWhetherNeedEditGesture:self.editing];
     }
 }
@@ -318,7 +320,8 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     [super layoutSubviews];
     
     self.editView.frame = CGRectMake(self.bounds.size.width-self.editWidth, 0, self.editWidth, self.bounds.size.height);
-    self.cancelEditView.frame = self.contentView.bounds;
+    self.cancelEditView.frame = self.contentContainer.bounds;
+    _contentContainer.frame = CGRectMake(_contentContainer.frame.origin.x, _contentContainer.frame.origin.y, self.frame.size.width, self.frame.size.height);
 }
 
 - (void)cancelEdit {
@@ -332,6 +335,13 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 }
 
 #pragma mark lazy
+- (UIView *)contentContainer {
+    if (!_contentContainer) {
+        _contentContainer = [[UIView alloc] init];
+        [self addSubview:_contentContainer];
+    }
+    return _contentContainer;
+}
 - (UIPanGestureRecognizer *)editGesture {
     if (!_editGesture) {
         _editGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editGestureRealize:)];
@@ -354,7 +364,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 - (UIView *)cancelEditView {
     if (!_cancelEditView) {
         _cancelEditView = [[UIView alloc] init];
-        [self.contentView addSubview:_cancelEditView];
+        [self.contentContainer addSubview:_cancelEditView];
         _cancelEditView.backgroundColor = [UIColor clearColor];
         _cancelEditView.hidden = YES;
         

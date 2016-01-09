@@ -99,4 +99,5 @@ LHIndexMake(NSInteger row, NSInteger section)
 
 @interface LHListViewCell : UICollectionViewCell <LHListViewCellEditViewDelegate>
 @property (nonatomic, assign) LHIndex index;
+@property (nonatomic, strong) UIView *contentContainer;
 @end
