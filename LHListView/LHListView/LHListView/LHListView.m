@@ -27,7 +27,6 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     listView.delegate = listView;
     listView.dataSource = listView;
     listView.layout = layout;
-    
     return listView;
 }
 
@@ -215,6 +214,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 
 - (void)enterEdit {
     self.cancelEditView.hidden = NO;
+    [self.contentContainer bringSubviewToFront:self.cancelEditView];
 }
 
 - (void)endEdit {
@@ -257,9 +257,9 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
                     self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 } else {
                     if (self.contentContainer.frame.origin.x > 20) {
-                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/10.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/40.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                     } else {
-                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/5.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/20.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                     }
                 }
             } else {
@@ -320,8 +320,8 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     [super layoutSubviews];
     
     self.editView.frame = CGRectMake(self.bounds.size.width-self.editWidth, 0, self.editWidth, self.bounds.size.height);
-    self.cancelEditView.frame = self.contentContainer.bounds;
     _contentContainer.frame = CGRectMake(_contentContainer.frame.origin.x, _contentContainer.frame.origin.y, self.frame.size.width, self.frame.size.height);
+    self.cancelEditView.frame = self.contentContainer.bounds;
 }
 
 - (void)cancelEdit {
@@ -361,6 +361,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     }
     return _editView;
 }
+
 - (UIView *)cancelEditView {
     if (!_cancelEditView) {
         _cancelEditView = [[UIView alloc] init];
