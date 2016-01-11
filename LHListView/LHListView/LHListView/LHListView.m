@@ -7,6 +7,7 @@
 //
 
 #import "LHListView.h"
+#import "Reachability.h"
 
 NSString *const LHListViewCellEnterEditNotification = @"LHListViewCellEnterEditNotification";
 NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotification";
@@ -15,6 +16,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 @interface LHListView () <UICollectionViewDelegateFlowLayout,UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, assign) CGFloat displayWidth;
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
+@property (nonatomic, strong) UIImageView *imageView;
 @end
 
 @implementation LHListView
@@ -28,6 +30,70 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     listView.dataSource = listView;
     listView.layout = layout;
     return listView;
+}
+
+- (void)reloadData {
+    [super reloadData];
+    [self contentMaker];
+}
+
+- (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+    [super reloadItemsAtIndexPaths:indexPaths];
+    [self contentMaker];
+}
+
+- (void)reloadSections:(NSIndexSet *)sections {
+    [super reloadSections:sections];
+    [self contentMaker];
+}
+
+- (NSInteger)totalRows {
+    NSInteger totalRows = 0;
+    NSInteger sections = [self numberOfSections];
+    for (NSInteger i = 0; i < sections; i++) {
+        NSInteger rows = [self numberOfItemsInSection:i];
+        totalRows += rows;
+    }
+    return totalRows;
+}
+
+- (void)contentMaker {
+    NSInteger totalRows = [self totalRows];
+    
+    if (totalRows == 0) {
+        self.imageView.hidden = NO;
+        [self bringSubviewToFront:self.imageView];
+        
+        [self.imageView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * obj, NSUInteger idx, BOOL * stop) {
+            [self.imageView removeGestureRecognizer:obj];
+        }];
+        
+        [[LHReachability sharedInstance] reachable:^{
+            self.imageView.image = self.reachImage;
+            self.imageView.frame = CGRectMake((self.displayWidth-self.reachImage.size.width)/2, _imageViewY, self.reachImage.size.width, self.reachImage.size.height);
+            UITapGestureRecognizer *reachTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reachTap)];
+            [self.imageView addGestureRecognizer:reachTap];
+        } or:^{
+            UITapGestureRecognizer *unreachTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(unreachTap)];
+            [self.imageView addGestureRecognizer:unreachTap];
+            self.imageView.image = self.unReachImage;
+            self.imageView.frame = CGRectMake((self.displayWidth-self.unReachImage.size.width)/2, _imageViewY, self.unReachImage.size.width, self.unReachImage.size.height);
+        }];
+    } else {
+        self.imageView.hidden = YES;
+    }
+}
+
+- (void)reachTap {
+    if ([self.listDelegate respondsToSelector:@selector(listViewDidTapReachImage:)]) {
+        [self.listDelegate listViewDidTapReachImage:self];
+    }
+}
+
+- (void)unreachTap {
+    if ([self.listDelegate respondsToSelector:@selector(listViewDidTapUnreachImage:)]) {
+        [self.listDelegate listViewDidTapUnreachImage:self];
+    }
 }
 
 - (void)setAdsorbHeader:(BOOL)adsorbHeader {
@@ -152,6 +218,17 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     } else {
         return CGSizeMake(0, 0);
     }
+}
+
+
+#pragma mark lazy
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        [self addSubview:_imageView];
+        _imageView.userInteractionEnabled = YES;
+    }
+    return _imageView;
 }
 @end
 

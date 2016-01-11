@@ -50,6 +50,9 @@ LHIndexMake(NSInteger row, NSInteger section)
 - (CGFloat)listView:(LHListView *)listView heightForSectionHeaderAtSection:(NSInteger)section;
 
 - (CGFloat)listView:(LHListView *)listView heightForSectionFooterAtSection:(NSInteger)section;
+
+- (void)listViewDidTapReachImage:(LHListView *)listView;
+- (void)listViewDidTapUnreachImage:(LHListView *)listView;
 @end
 
 
@@ -77,8 +80,13 @@ LHIndexMake(NSInteger row, NSInteger section)
 
 @property (nonatomic, assign) BOOL adsorbHeader;
 @property (nonatomic, assign) BOOL adsorbFooter;
-@end
 
+- (NSInteger)totalRows;
+
+@property (nonatomic, assign) CGFloat imageViewY;
+@property (nonatomic, strong) UIImage *unReachImage;
+@property (nonatomic, strong) UIImage *reachImage;
+@end
 
 
 
