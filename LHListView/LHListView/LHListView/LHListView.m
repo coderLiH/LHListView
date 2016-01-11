@@ -179,6 +179,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     if ([self.delegate respondsToSelector:@selector(editView:didTapWithTap:)]) {
         [self.delegate editView:self didTapWithTap:tap];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:LHListViewCellEndEditNotification object:nil];
 }
 @end
 
