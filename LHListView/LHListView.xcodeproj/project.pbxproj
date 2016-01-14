@@ -18,6 +18,7 @@
 		B029833D1C313218006DCC95 /* DeleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = B029833C1C313218006DCC95 /* DeleteView.m */; };
 		B02983411C313DB5006DCC95 /* LHListView.m in Sources */ = {isa = PBXBuildFile; fileRef = B02983401C313DB5006DCC95 /* LHListView.m */; };
 		B03219081C328C1B004E1D38 /* LHListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B03219071C328C1B004E1D38 /* LHListViewController.m */; };
+		B0E573811C47566F00E0A548 /* LHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E5737E1C47566F00E0A548 /* LHReachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		B02983401C313DB5006DCC95 /* LHListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHListView.m; sourceTree = "<group>"; };
 		B03219061C328C1B004E1D38 /* LHListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHListViewController.h; sourceTree = "<group>"; };
 		B03219071C328C1B004E1D38 /* LHListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHListViewController.m; sourceTree = "<group>"; };
+		B0E5737D1C47566F00E0A548 /* LHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHReachability.h; sourceTree = "<group>"; };
+		B0E5737E1C47566F00E0A548 /* LHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHReachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,12 +158,22 @@
 		B029833E1C313DB5006DCC95 /* LHListView */ = {
 			isa = PBXGroup;
 			children = (
+				B0E5737C1C47566F00E0A548 /* Reachability */,
 				B029833F1C313DB5006DCC95 /* LHListView.h */,
 				B02983401C313DB5006DCC95 /* LHListView.m */,
 				B03219061C328C1B004E1D38 /* LHListViewController.h */,
 				B03219071C328C1B004E1D38 /* LHListViewController.m */,
 			);
 			path = LHListView;
+			sourceTree = "<group>";
+		};
+		B0E5737C1C47566F00E0A548 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B0E5737D1C47566F00E0A548 /* LHReachability.h */,
+				B0E5737E1C47566F00E0A548 /* LHReachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,6 +310,7 @@
 				B029830D1C2E6BD6006DCC95 /* ViewController.m in Sources */,
 				B029833D1C313218006DCC95 /* DeleteView.m in Sources */,
 				B029830A1C2E6BD6006DCC95 /* AppDelegate.m in Sources */,
+				B0E573811C47566F00E0A548 /* LHReachability.m in Sources */,
 				B02983071C2E6BD6006DCC95 /* main.m in Sources */,
 				B02983411C313DB5006DCC95 /* LHListView.m in Sources */,
 			);

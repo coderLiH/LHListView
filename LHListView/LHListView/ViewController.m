@@ -38,11 +38,11 @@
     
 }
 - (NSInteger)numberOfSectionsInListView:(LHListView *)listView {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)listView:(LHListView *)listView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return 0;
 }
 
 - (LHListViewCell *)listView:(LHListView *)listView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

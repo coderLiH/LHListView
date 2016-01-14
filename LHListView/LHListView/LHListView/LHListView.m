@@ -7,7 +7,7 @@
 //
 
 #import "LHListView.h"
-#import "Reachability.h"
+#import "LHReachability.h"
 
 NSString *const LHListViewCellEnterEditNotification = @"LHListViewCellEnterEditNotification";
 NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotification";
