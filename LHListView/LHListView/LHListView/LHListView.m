@@ -7,7 +7,7 @@
 //
 
 #import "LHListView.h"
-#import "LHReachability.h"
+#import "Reachability.h"
 
 NSString *const LHListViewCellEnterEditNotification = @"LHListViewCellEnterEditNotification";
 NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotification";
@@ -256,7 +256,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     if ([self.delegate respondsToSelector:@selector(editView:didTapWithTap:)]) {
         [self.delegate editView:self didTapWithTap:tap];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:LHListViewCellEndEditNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LHListViewCellEndEditNotification object:nil userInfo:@{@"unanimate":@(YES)}];
 }
 @end
 
@@ -285,7 +285,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         self.contentView.hidden = YES;
         self.contentContainer.backgroundColor = [UIColor whiteColor];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterEdit) name:LHListViewCellEnterEditNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEdit) name:LHListViewCellEndEditNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEdit:) name:LHListViewCellEndEditNotification object:nil];
     }
     return self;
 }
@@ -295,8 +295,9 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     [self.contentContainer bringSubviewToFront:self.cancelEditView];
 }
 
-- (void)endEdit {
-    [self animateBackNeedAnimation:YES];
+- (void)endEdit:(NSNotification *)noti {
+    BOOL animate = ![noti.userInfo[@"unanimate"] boolValue];
+    [self animateBackNeedAnimation:animate];
     self.cancelEditView.hidden = YES;
 }
 
