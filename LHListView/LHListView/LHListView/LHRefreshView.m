@@ -70,7 +70,6 @@
     if (self.state == LHRefreshViewStateRefreshing) {
         [UIView animateWithDuration:0.4 animations:^{
             self.listView.contentInset = _originInset;
-            self.refreshingView.alpha = 0.0;
         } completion:^(BOOL finished) {
             self.state = LHRefreshViewStateAnimating;
         }];
@@ -101,6 +100,7 @@
         self.preparingView.alpha = 1.0;
         self.pullingView.alpha = 0.0;
     } else {
+        self.refreshingView.alpha = 0.0;
         self.preparingView.alpha = 0.0;
     }
 }
