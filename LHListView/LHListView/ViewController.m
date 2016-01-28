@@ -10,31 +10,26 @@
 #import "LHListView.h"
 #import "LHListViewController.h"
 
-@interface ViewController () <LHListViewDatasource, LHListViewDelegate>
+@interface ViewController () <LHListViewDatasource, LHListViewDelegate, LHListViewRefresher>
 
 @end
 
 @implementation ViewController
-- (void)refresh:(UIRefreshControl *)refresh {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [refresh endRefreshing];
-    });
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view, typically from a nib.
     LHListView *listView = [LHListView listViewWithDisplayWidth:self.view.bounds.size.width];
     [self.view addSubview:listView];
     listView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    [refresh addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [listView addSubview:refresh];
-    listView.frame = self.view.bounds;
+    listView.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64);
     listView.listDelegate = self;
     listView.listDataSource = self;
     [listView registerClass:[LHListViewCell class] forCellWithReuseIdentifier:@"a"];
     [listView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"h"];
     [listView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"f"];
+    listView.listRefresher = self;
     
 }
 - (NSInteger)numberOfSectionsInListView:(LHListView *)listView {
@@ -42,7 +37,7 @@
 }
 
 - (NSInteger)listView:(LHListView *)listView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return 10;
 }
 
 - (LHListViewCell *)listView:(LHListView *)listView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -99,5 +94,11 @@
 }
 - (CGFloat)listView:(LHListView *)listView heightForSectionFooterAtSection:(NSInteger)section {
     return 100;
+}
+
+- (void)listViewDidBeginRefresh:(LHListView *)listView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [listView endRefreshing];
+    });
 }
 @end
