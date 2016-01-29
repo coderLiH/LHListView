@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LHCollectionRoot.h"
 
 UIKIT_EXTERN NSString *const LHListViewCellEnterEditNotification;
 UIKIT_EXTERN NSString *const LHListViewCellEndEditNotification;
@@ -15,9 +16,6 @@ struct LHIndex {
     NSInteger row;
     NSInteger section;
 };
-
-#define List_Refresh_Height         60
-#define List_Refresh_Width          ([[UIScreen mainScreen] bounds].size.width)
 
 typedef struct LHIndex LHIndex;
 
@@ -73,24 +71,11 @@ LHIndexMake(NSInteger row, NSInteger section)
 @end
 
 
-@protocol LHListViewRefresher <NSObject>
 
-@required
-- (void)listViewDidBeginRefresh:(LHListView *)listView;
-@optional
-- (void)listView:(LHListView *)listView refreshProgress:(CGFloat)progress;
-- (UIView *)listViewRefreshPullingView;
-- (UIView *)listViewRefreshPreparingView;
-- (UIView *)listViewRefreshRefreshingView;
-
-@end
-
-
-@interface LHListView : UICollectionView
+@interface LHListView : LHCollectionRoot
 
 @property (nonatomic, weak) id <LHListViewDelegate> listDelegate;
 @property (nonatomic, weak) id <LHListViewDatasource> listDataSource;
-@property (nonatomic, weak) id <LHListViewRefresher> listRefresher;
 
 
 + (instancetype)listViewWithDisplayWidth:(CGFloat)displayWidth;
@@ -103,9 +88,6 @@ LHIndexMake(NSInteger row, NSInteger section)
 @property (nonatomic, assign) CGFloat imageViewY;
 @property (nonatomic, strong) UIImage *unReachImage;
 @property (nonatomic, strong) UIImage *reachImage;
-
-- (void)endRefreshing;
-- (BOOL)isRefreshing;
 @end
 
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LHListView.h"
+#import "LHCollectionRoot.h"
 
 typedef NS_ENUM(NSInteger, LHRefreshViewState) {
     LHRefreshViewStateAnimating,
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, LHRefreshViewState) {
 
 @interface LHRefreshView : UIView
 
-@property (nonatomic, weak) LHListView *listView;
+@property (nonatomic, weak) LHCollectionRoot *listView;
 
 @property (nonatomic, assign) LHRefreshViewState state;
 

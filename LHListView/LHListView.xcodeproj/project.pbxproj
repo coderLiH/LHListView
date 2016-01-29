@@ -18,6 +18,7 @@
 		B029833D1C313218006DCC95 /* DeleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = B029833C1C313218006DCC95 /* DeleteView.m */; };
 		B02983411C313DB5006DCC95 /* LHListView.m in Sources */ = {isa = PBXBuildFile; fileRef = B02983401C313DB5006DCC95 /* LHListView.m */; };
 		B03219081C328C1B004E1D38 /* LHListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B03219071C328C1B004E1D38 /* LHListViewController.m */; };
+		B0338E2A1C5B521D009AFAB1 /* LHCollectionRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = B0338E291C5B521D009AFAB1 /* LHCollectionRoot.m */; };
 		B035ADA81C59DD7E00F88374 /* LHRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = B035ADA71C59DD7E00F88374 /* LHRefreshView.m */; };
 		B035ADAB1C59DDE400F88374 /* UIScrollView+LHExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B035ADAA1C59DDE400F88374 /* UIScrollView+LHExtension.m */; };
 		B0E573811C47566F00E0A548 /* LHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E5737E1C47566F00E0A548 /* LHReachability.m */; };
@@ -63,6 +64,8 @@
 		B02983401C313DB5006DCC95 /* LHListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHListView.m; sourceTree = "<group>"; };
 		B03219061C328C1B004E1D38 /* LHListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHListViewController.h; sourceTree = "<group>"; };
 		B03219071C328C1B004E1D38 /* LHListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHListViewController.m; sourceTree = "<group>"; };
+		B0338E281C5B521D009AFAB1 /* LHCollectionRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHCollectionRoot.h; sourceTree = "<group>"; };
+		B0338E291C5B521D009AFAB1 /* LHCollectionRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHCollectionRoot.m; sourceTree = "<group>"; };
 		B035ADA61C59DD7E00F88374 /* LHRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHRefreshView.h; sourceTree = "<group>"; };
 		B035ADA71C59DD7E00F88374 /* LHRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHRefreshView.m; sourceTree = "<group>"; };
 		B035ADA91C59DDE400F88374 /* UIScrollView+LHExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+LHExtension.h"; sourceTree = "<group>"; };
@@ -164,6 +167,8 @@
 		B029833E1C313DB5006DCC95 /* LHListView */ = {
 			isa = PBXGroup;
 			children = (
+				B0338E281C5B521D009AFAB1 /* LHCollectionRoot.h */,
+				B0338E291C5B521D009AFAB1 /* LHCollectionRoot.m */,
 				B035ADA91C59DDE400F88374 /* UIScrollView+LHExtension.h */,
 				B035ADAA1C59DDE400F88374 /* UIScrollView+LHExtension.m */,
 				B0E5737C1C47566F00E0A548 /* Reachability */,
@@ -319,6 +324,7 @@
 				B035ADA81C59DD7E00F88374 /* LHRefreshView.m in Sources */,
 				B03219081C328C1B004E1D38 /* LHListViewController.m in Sources */,
 				B029830D1C2E6BD6006DCC95 /* ViewController.m in Sources */,
+				B0338E2A1C5B521D009AFAB1 /* LHCollectionRoot.m in Sources */,
 				B029833D1C313218006DCC95 /* DeleteView.m in Sources */,
 				B029830A1C2E6BD6006DCC95 /* AppDelegate.m in Sources */,
 				B0E573811C47566F00E0A548 /* LHReachability.m in Sources */,
