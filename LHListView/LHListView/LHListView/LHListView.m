@@ -224,6 +224,25 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     }
 }
 
+#pragma mark scroll
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if ([self.listDelegate respondsToSelector:@selector(listViewWillBeginDragging:)]) {
+        [self.listDelegate listViewWillBeginDragging:self];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if ([self.listDelegate respondsToSelector:@selector(listViewDidEndDecelerating:)]) {
+        [self.listDelegate listViewDidEndDecelerating:self];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if ([self.listDelegate respondsToSelector:@selector(listViewDidEndDragging:willDecelerate:)]) {
+        [self.listDelegate listViewDidEndDragging:self willDecelerate:decelerate];
+    }
+}
+
 #pragma mark lazy
 - (UIImageView *)imageView {
     if (!_imageView) {

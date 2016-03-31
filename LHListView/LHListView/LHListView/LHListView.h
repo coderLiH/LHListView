@@ -54,6 +54,10 @@ LHIndexMake(NSInteger row, NSInteger section)
 
 - (void)listViewDidTapReachImage:(LHListView *)listView;
 - (void)listViewDidTapUnreachImage:(LHListView *)listView;
+
+- (void)listViewWillBeginDragging:(LHListView *)listView;
+- (void)listViewDidEndDecelerating:(LHListView *)listView;
+- (void)listViewDidEndDragging:(LHListView *)listView willDecelerate:(BOOL)decelerate;
 @end
 
 
