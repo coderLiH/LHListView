@@ -99,13 +99,17 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 - (void)setAdsorbHeader:(BOOL)adsorbHeader {
     _adsorbHeader = adsorbHeader;
     
-    self.layout.sectionHeadersPinToVisibleBounds = adsorbHeader;
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0) {
+        self.layout.sectionHeadersPinToVisibleBounds = adsorbHeader;
+    }
 }
 
 - (void)setAdsorbFooter:(BOOL)adsorbFooter {
     _adsorbFooter = adsorbFooter;
     
-    self.layout.sectionFootersPinToVisibleBounds = adsorbFooter;
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0) {
+        self.layout.sectionFootersPinToVisibleBounds = adsorbFooter;
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
