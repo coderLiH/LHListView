@@ -7,7 +7,7 @@
 //
 
 #import "LHListView.h"
-#import "LHReachability.h"
+#import "Reachability.h"
 
 
 NSString *const LHListViewCellEnterEditNotification = @"LHListViewCellEnterEditNotification";
@@ -374,7 +374,11 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         {
             self.scrollView.scrollEnabled = YES;
             if (self.contentContainer.frame.origin.x >= -self.editWidth/2) {
-                [self animateBackNeedAnimation:YES];
+                if (self.contentContainer.frame.origin.x >= 0) {
+                    [self animateBackNeedAnimation:NO];
+                } else {
+                    [self animateBackNeedAnimation:YES];
+                }
             } else {
                 [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                     self.contentContainer.frame = CGRectMake(-self.editWidth, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);

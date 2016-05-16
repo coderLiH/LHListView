@@ -84,7 +84,9 @@
     @try{
         [self.panGestureRecognizer removeObserver:self forKeyPath:@"state"];
         [self removeObserver:self forKeyPath:@"contentOffset"];
-    }@catch(id anException){}
+    }@catch(id anException){
+        NSLog(@"%@",anException);
+    }
 }
 
 - (void)addObservers {
