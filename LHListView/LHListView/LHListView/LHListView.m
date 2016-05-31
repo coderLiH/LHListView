@@ -305,6 +305,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.contentView.hidden = YES;
+        self.backgroundColor = [UIColor whiteColor];
         self.contentContainer.backgroundColor = [UIColor whiteColor];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterEdit) name:LHListViewCellEnterEditNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEdit:) name:LHListViewCellEndEditNotification object:nil];
@@ -320,7 +321,6 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 - (void)endEdit:(NSNotification *)noti {
     BOOL animate = ![noti.userInfo[@"unanimate"] boolValue];
     [self animateBackNeedAnimation:animate];
-    self.cancelEditView.hidden = YES;
 }
 
 - (void)setEditing:(BOOL)editing {
@@ -354,22 +354,15 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
             if (!self.scrollView.dragging) {
                 CGPoint move = [pan translationInView:self];
                 self.scrollView.scrollEnabled = NO;
-//                if (self.contentContainer.frame.origin.x >= -self.editWidth && self.contentContainer.frame.origin.x <= 0) {
-//                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
-//                } else {
-//                    if (self.contentContainer.frame.origin.x > 20) {
-//                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/40.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
-//                    } else {
-//                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/20.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
-//                    }
-//                }
-                if (self.contentContainer.frame.origin.x+move.x > 0) {
-                    self.contentContainer.frame = CGRectMake(0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                if (self.contentContainer.frame.origin.x+move.x > 10) {
+                    self.contentContainer.frame = CGRectMake(10, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 } else {
-                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                    if (self.contentContainer.frame.origin.x + move.x/5 < -self.editWidth) {
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/5, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                    } else {
+                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                    }
                 }
-            } else {
-                //                if (self.contentContainer.frame.origin.x != 0) {}
             }
         }
             break;
@@ -379,8 +372,12 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         {
             self.scrollView.scrollEnabled = YES;
             if (self.contentContainer.frame.origin.x >= -self.editWidth/2) {
-                if (self.contentContainer.frame.origin.x >= 0) {
-                    [self animateBackNeedAnimation:NO];
+                if (self.contentContainer.frame.origin.x > 0) {
+                    [UIView animateWithDuration:0.2 animations:^{
+                        self.contentContainer.frame = CGRectMake(-10, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+                    } completion:^(BOOL finished) {
+                        [self animateBackNeedAnimation:YES];
+                    }];
                 } else {
                     [self animateBackNeedAnimation:YES];
                 }
@@ -416,7 +413,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 
 - (void)animateBackNeedAnimation:(BOOL)need {
     if (need) {
-        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.contentContainer.frame = self.bounds;
         } completion:^(BOOL finished) {
             [self decideWhetherNeedEditGesture:self.editing];
@@ -425,6 +422,7 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
         self.contentContainer.frame = self.bounds;
         [self decideWhetherNeedEditGesture:self.editing];
     }
+    self.cancelEditView.hidden = YES;
 }
 
 - (void)prepareForReuse {
