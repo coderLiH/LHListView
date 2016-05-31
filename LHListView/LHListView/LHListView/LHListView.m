@@ -7,7 +7,7 @@
 //
 
 #import "LHListView.h"
-#import "Reachability.h"
+#import "LHReachability.h"
 
 
 NSString *const LHListViewCellEnterEditNotification = @"LHListViewCellEnterEditNotification";
@@ -354,14 +354,19 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
             if (!self.scrollView.dragging) {
                 CGPoint move = [pan translationInView:self];
                 self.scrollView.scrollEnabled = NO;
-                if (self.contentContainer.frame.origin.x >= -self.editWidth && self.contentContainer.frame.origin.x <= 0) {
-                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+//                if (self.contentContainer.frame.origin.x >= -self.editWidth && self.contentContainer.frame.origin.x <= 0) {
+//                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+//                } else {
+//                    if (self.contentContainer.frame.origin.x > 20) {
+//                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/40.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+//                    } else {
+//                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/20.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
+//                    }
+//                }
+                if (self.contentContainer.frame.origin.x+move.x > 0) {
+                    self.contentContainer.frame = CGRectMake(0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 } else {
-                    if (self.contentContainer.frame.origin.x > 20) {
-                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/40.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
-                    } else {
-                        self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x/20.0, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
-                    }
+                    self.contentContainer.frame = CGRectMake(self.contentContainer.frame.origin.x+move.x, 0, self.contentContainer.frame.size.width, self.contentContainer.frame.size.height);
                 }
             } else {
                 //                if (self.contentContainer.frame.origin.x != 0) {}
@@ -399,6 +404,13 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+        [gestureRecognizer requireGestureRecognizerToFail:otherGestureRecognizer];
+    } else {
+        if ([otherGestureRecognizer.view isKindOfClass:NSClassFromString(@"UILayoutContainerView")]) {
+            [otherGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
+        }
+    }
     return YES;
 }
 
