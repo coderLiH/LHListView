@@ -243,6 +243,12 @@ NSString *const LHListViewCellEndEditNotification = @"LHListViewCellEndEditNotif
     }
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([self.listDelegate respondsToSelector:@selector(listViewDidScroll:)]) {
+        [self.listDelegate listViewDidScroll:self];
+    }
+}
+
 #pragma mark lazy
 - (UIImageView *)imageView {
     if (!_imageView) {

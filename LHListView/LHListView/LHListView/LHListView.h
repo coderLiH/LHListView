@@ -58,6 +58,7 @@ LHIndexMake(NSInteger row, NSInteger section)
 - (void)listViewWillBeginDragging:(LHListView *)listView;
 - (void)listViewDidEndDecelerating:(LHListView *)listView;
 - (void)listViewDidEndDragging:(LHListView *)listView willDecelerate:(BOOL)decelerate;
+- (void)listViewDidScroll:(LHListView *)listView;
 @end
 
 
